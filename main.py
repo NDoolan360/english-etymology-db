@@ -87,6 +87,8 @@ def parse_wikitext(unparsed_data: Tuple[str, str]) -> List[Etymology]:
     parsed_etys = []
     for language_section in wikitext.get_sections(levels=[2]):
         lang = str(language_section.nodes[0].title)
+        if (lang != 'English'):
+          continue
         etymologies = language_section.get_sections(matches="Etymology", flat=True)
         for e in etymologies:
             clean_wikicode(e)

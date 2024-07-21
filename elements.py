@@ -3,9 +3,10 @@ import uuid, base64
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, List
 
 LANG_CODE_PATH = Path.cwd().joinpath("wiktionary_codes.csv")
+COMMON_ENGLISH_WORDS_PATH = Path.cwd().joinpath("common_english_words.csv")
 
 
 @dataclass(frozen=True)
@@ -16,9 +17,9 @@ class Etymology:
     related_lang: Optional[str]
     related_term: Optional[str]
     position: int = 0
-    group_tag: str = None
-    parent_tag: str = None
-    parent_position: int = None
+    group_tag: str | None = None
+    parent_tag: str | None = None
+    parent_position: int | None = None
 
     @classmethod
     def with_parent(cls, child: "Etymology", parent: "Etymology", position: int = 0):
@@ -52,7 +53,7 @@ class Etymology:
 
     def is_valid(self) -> bool:
         # May include more conditions in the future
-        return self.related_term not in ("", "-")
+        return self.related_term not in ("", "-") and self.term in common_english_words()
 
     @staticmethod
     def header() -> Tuple[str, ...]:
@@ -73,3 +74,11 @@ def lang_dict() -> Dict[str, str]:
         reader = csv.reader(f_in)
         next(reader)
         return {row[0]: row[1] for row in reader}
+
+
+@lru_cache(maxsize=1)
+def common_english_words() -> List[str]:
+    with open(COMMON_ENGLISH_WORDS_PATH, 'r') as f_in:
+        reader = csv.reader(f_in)
+        next(reader)
+        return [row[0] for row in reader]
