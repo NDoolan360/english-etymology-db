@@ -1,3 +1,4 @@
 lxml==4.9.3
+lxml-stubs==0.5.1
 requests==2.31.0
 mwparserfromhell==0.6.5

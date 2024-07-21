@@ -428,7 +428,7 @@ def suffix(term: str, lang: str, template: Template):
     Params: (lang, root, suffix)
     """
     p = [param for param in template.params if not param.showkey]
-    if len(str(p)) < 3:
+    if len(p) < 3:
         return []
     suf = Etymology(
         term=term,
@@ -815,4 +815,3 @@ def related_parsed(term: str, lang: str, template: Template):
     Params: (Template 1, template n...)
     """
     return unnest_template(term=term, lang=lang, template=template, reltype=RelType.GroupMention)
-
