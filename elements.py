@@ -3,10 +3,27 @@ import uuid, base64
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Optional, Tuple, Dict, List
+from typing import Optional, Set, Tuple, Dict
 
-LANG_CODE_PATH = Path.cwd().joinpath("wiktionary_codes.csv")
-COMMON_ENGLISH_WORDS_PATH = Path.cwd().joinpath("common_english_words.csv")
+
+LANG_CODE_PATH = Path.cwd().joinpath("csv", "wiktionary_codes.csv")
+def get_lang_dict() -> Dict[str, str]:
+    with open(LANG_CODE_PATH, 'r') as f_in:
+        reader = csv.reader(f_in)
+        next(reader)
+        return {row[0]: row[1] for row in reader}
+
+lang_dict = get_lang_dict()
+
+
+# COMMON_ENGLISH_WORDS_PATH = Path.cwd().joinpath("csv", "common_english_words.csv")
+# def common_english_words() -> Set[str]:
+#     with open(COMMON_ENGLISH_WORDS_PATH, 'r') as f_in:
+#         reader = csv.reader(f_in)
+#         next(reader)
+#         return {row[0] for row in reader}
+
+# valid_words = common_english_words()
 
 
 @dataclass(frozen=True)
@@ -49,11 +66,14 @@ class Etymology:
 
     @property
     def related_lang_full(self):
-        return lang_dict().get(self.related_lang, self.related_lang)
+        if self.related_lang:
+            return lang_dict.get(self.related_lang, self.related_lang)
+        else:
+            return None
 
     def is_valid(self) -> bool:
         # May include more conditions in the future
-        return self.related_term not in ("", "-") and self.term in common_english_words()
+        return self.related_term not in ("", "-") # and self.term in valid_words
 
     @staticmethod
     def header() -> Tuple[str, ...]:
@@ -66,19 +86,3 @@ class Etymology:
         row = (self.term_id, self.lang, self.term, self.reltype, self.related_term_id, self.related_lang_full,
                self.related_term, self.position, self.group_tag, self.parent_tag, self.parent_position)
         return row
-
-
-@lru_cache(maxsize=1)
-def lang_dict() -> Dict[str, str]:
-    with open(LANG_CODE_PATH, 'r') as f_in:
-        reader = csv.reader(f_in)
-        next(reader)
-        return {row[0]: row[1] for row in reader}
-
-
-@lru_cache(maxsize=1)
-def common_english_words() -> List[str]:
-    with open(COMMON_ENGLISH_WORDS_PATH, 'r') as f_in:
-        reader = csv.reader(f_in)
-        next(reader)
-        return [row[0] for row in reader]

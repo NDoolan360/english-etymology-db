@@ -1,7 +1,4 @@
 # etymology-db
-**Downloads:** (Last generated 2023-12-05)  
-[**Gzipped CSV**](https://1drv.ms/u/s!AtpEocFNRNBWhAe7co0JFvac-OfA?e=wnJe4r)  
-[**Parquet**](https://1drv.ms/u/s!AtpEocFNRNBWhhP6w5D9XfdtPH9I?e=jWRwnI)
 
 A structured, comprehensive, and multilingual etymology dataset created by parsing Wiktionary's etymology sections. Key features:
 *  4.2+ million etymological relationships between 2.0+ million terms in 3300+ languages/dialects
@@ -65,8 +62,8 @@ And here is a description of each relation type. Note that these are all derived
 | group_related_root | A node that groups together rows in which `related_terms` are not just related to the `term`, but to each other as well. |
 | group_derived_root | A node that groups together rows that, when combined, form an unbroken chain of inheritance (in reverse chronological order). |
 
-The `wiktionary_codes.csv` file is manually combined from these two pages:  
-https://en.wiktionary.org/wiki/Wiktionary:List_of_languages  
+The `wiktionary_codes.csv` file is manually combined from these two pages:
+https://en.wiktionary.org/wiki/Wiktionary:List_of_languages
 https://en.wiktionary.org/wiki/Module:etymology_languages/data
 
-All data is licensed under the Creative Commons ShareAlike 3.0 License. All code is licensed under the Apache 2.0 license. 
+All data is licensed under the Creative Commons ShareAlike 3.0 License. All code is licensed under the Apache 2.0 license.
